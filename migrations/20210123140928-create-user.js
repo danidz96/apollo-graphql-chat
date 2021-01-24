@@ -9,15 +9,20 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       username: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(20),
         unique: true,
         allowNull: false,
       },
       email: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(100),
         unique: true,
         allowNull: false,
       },
+      password: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      imageUrl: Sequelize.STRING,
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
