@@ -1,4 +1,5 @@
 const { User } = require('../models');
+const { UserInputError } = require('apollo-server');
 const bcrypt = require('bcryptjs');
 
 module.exports = {
@@ -15,9 +16,17 @@ module.exports = {
   Mutation: {
     register: async (parent, args) => {
       let { username, email, password, confirmPassword } = args;
+      let errors = {};
       try {
-        // TODO: Validate input data
-        // TODO: Check if username / email exists
+        if (!username.trim()) errors.username = 'username must not be empty';
+        if (!email.trim()) errors.email = 'email must not be empty';
+        if (!password.trim()) errors.password = 'password must not be empty';
+        if (!confirmPassword.trim()) errors.confirmPassword = 'repeat password must not be empty';
+        if (password !== confirmPassword.trim()) errors.confirmPassword = 'passwords must match';
+
+        if (Object.keys(errors).length > 0) {
+          throw errors;
+        }
 
         password = await bcrypt.hash(password, 6);
 
@@ -29,8 +38,7 @@ module.exports = {
 
         return user;
       } catch (error) {
-        console.log(error);
-        throw error;
+        throw new UserInputError('Bad input', { errors: error });
       }
     },
   },
