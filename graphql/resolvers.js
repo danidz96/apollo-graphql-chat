@@ -16,19 +16,27 @@ module.exports = {
       const { username, password } = args;
       let errors = {};
       try {
+        if (username.trim() === '') errors.username = 'username must not be empty';
+        if (password === '') errors.password = 'password must not be empty';
+
+        if (Object.keys(errors).length > 0) {
+          return new UserInputError('Bad input', { errors });
+        }
+
         const user = await User.findOne({
           where: { username },
         });
+
         if (!user) {
           errors.username = 'user not found';
-          throw new UserInputError('User not found', { errors });
+          return new UserInputError('User not found', { errors });
         }
 
         const correctPassword = await bcrypt.compare(password, user.password);
 
         if (!correctPassword) {
           errors.password = 'password is incorrect';
-          throw new AuthenticationError('Password is incorrect', { errors });
+          return new AuthenticationError('Password is incorrect', { errors });
         }
 
         return user;
@@ -49,7 +57,7 @@ module.exports = {
         if (password !== confirmPassword.trim()) errors.confirmPassword = 'passwords must match';
 
         if (Object.keys(errors).length > 0) {
-          throw errors;
+          return errors;
         }
 
         password = await bcrypt.hash(password, 6);
@@ -62,7 +70,7 @@ module.exports = {
 
         return user;
       } catch (error) {
-        throw new UserInputError('Bad input', { errors: error });
+        return new UserInputError('Bad input', { errors: error });
       }
     },
   },
