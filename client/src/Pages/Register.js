@@ -19,7 +19,7 @@ function Register() {
   };
 
   return (
-    <div className="p-12 bg-white m-auto max-w-md">
+    <div className="p-12 bg-white m-auto max-w-md rounded">
       <h1 className="text-xl font-semibold">Register</h1>
       <form className="mt-6" onSubmit={submitRegisterForm}>
         <label htmlFor="firstname" className="block text-xs font-semibold text-gray-600">
