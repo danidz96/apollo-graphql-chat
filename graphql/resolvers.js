@@ -86,7 +86,7 @@ module.exports = {
         if (password !== confirmPassword.trim()) errors.confirmPassword = 'passwords must match';
 
         if (Object.keys(errors).length > 0) {
-          return errors;
+          throw errors;
         }
 
         password = await bcrypt.hash(password, 6);
