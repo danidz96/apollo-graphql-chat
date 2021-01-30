@@ -1,25 +1,30 @@
 require('dotenv').config();
 
+const { DB_USERNAME, DB_PASSWORD, DB_HOST, JWT_SECRET_KEY } = process.env;
+
 module.exports = {
   development: {
-    username: process.env.DB_USERNAME,
-    password: process.env.DB_PASSWORD,
+    username: DB_USERNAME,
+    password: DB_PASSWORD,
     database: 'chat_development',
-    host: process.env.DB_HOST,
+    host: DB_HOST,
     dialect: 'postgres',
+    jwtSecretKey: JWT_SECRET_KEY,
   },
   test: {
-    username: process.env.DB_USERNAME,
-    password: process.env.DB_PASSWORD,
+    username: DB_USERNAME,
+    password: DB_PASSWORD,
     database: 'chat_test',
-    host: process.env.DB_HOST,
+    host: DB_HOST,
     dialect: 'postgres',
+    jwtSecretKey: JWT_SECRET_KEY,
   },
   production: {
-    username: process.env.DB_USERNAME,
-    password: process.env.DB_PASSWORD,
+    username: DB_USERNAME,
+    password: DB_PASSWORD,
     database: 'chat_production',
-    host: process.env.DB_HOST,
+    host: DB_HOST,
     dialect: 'postgres',
+    jwtSecretKey: JWT_SECRET_KEY,
   },
 };
