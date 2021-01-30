@@ -1,6 +1,10 @@
 const { User } = require('../models');
 const { UserInputError, AuthenticationError } = require('apollo-server');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+
+const env = process.env.NODE_ENV || 'development';
+const { jwtSecretKey } = require('../config/config')[env];
 
 module.exports = {
   Query: {
@@ -15,6 +19,7 @@ module.exports = {
     login: async (_, args) => {
       const { username, password } = args;
       let errors = {};
+
       try {
         if (username.trim() === '') errors.username = 'username must not be empty';
         if (password === '') errors.password = 'password must not be empty';
@@ -39,7 +44,15 @@ module.exports = {
           return new AuthenticationError('Password is incorrect', { errors });
         }
 
-        return user;
+        const token = jwt.sign(
+          {
+            username,
+          },
+          jwtSecretKey,
+          { expiresIn: '5h' },
+        );
+
+        return { ...user.toJSON(), createdAt: user.createdAt.toISOString(), token };
       } catch (error) {
         console.log(error);
       }
