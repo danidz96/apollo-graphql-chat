@@ -2,18 +2,34 @@ const { User } = require('../models');
 const { UserInputError, AuthenticationError } = require('apollo-server');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const { Op } = require('sequelize');
 
 const env = process.env.NODE_ENV || 'development';
 const { jwtSecretKey } = require('../config/config')[env];
 
 module.exports = {
   Query: {
-    getUsers: async () => {
+    getUsers: async (_, __, context) => {
       try {
-        const users = await User.findAll();
+        let user;
+        if (context.req?.headers?.authorization) {
+          const token = context.req.headers.authorization.split('Bearer ')[1];
+
+          jwt.verify(token, jwtSecretKey, (err, decodedToken) => {
+            if (err) {
+              throw new AuthenticationError('Unauthenticated');
+            }
+            user = decodedToken;
+          });
+        }
+
+        const users = await User.findAll({
+          where: { username: { [Op.ne]: user.username } },
+        });
         return users;
       } catch (error) {
         console.log(error);
+        throw error;
       }
     },
     login: async (_, args) => {
@@ -25,7 +41,7 @@ module.exports = {
         if (password === '') errors.password = 'password must not be empty';
 
         if (Object.keys(errors).length > 0) {
-          return new UserInputError('Bad input', { errors });
+          throw new UserInputError('Bad input', { errors });
         }
 
         const user = await User.findOne({
@@ -34,14 +50,14 @@ module.exports = {
 
         if (!user) {
           errors.username = 'user not found';
-          return new UserInputError('User not found', { errors });
+          throw new UserInputError('User not found', { errors });
         }
 
         const correctPassword = await bcrypt.compare(password, user.password);
 
         if (!correctPassword) {
           errors.password = 'password is incorrect';
-          return new AuthenticationError('Password is incorrect', { errors });
+          throw new AuthenticationError('Password is incorrect', { errors });
         }
 
         const token = jwt.sign(
@@ -54,7 +70,7 @@ module.exports = {
 
         return { ...user.toJSON(), createdAt: user.createdAt.toISOString(), token };
       } catch (error) {
-        console.log(error);
+        throw error;
       }
     },
   },
@@ -83,7 +99,7 @@ module.exports = {
 
         return user;
       } catch (error) {
-        return new UserInputError('Bad input', { errors: error });
+        throw new UserInputError('Bad input', { errors: error });
       }
     },
   },
