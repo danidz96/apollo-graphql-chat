@@ -10,7 +10,7 @@ const REGISTER_USER = gql`
   }
 `;
 
-function Register() {
+function Register(props) {
   const [variables, setVariables] = useState({
     username: '',
     email: '',
@@ -21,12 +21,8 @@ function Register() {
   const [errors, setErrors] = useState({});
 
   const [registerUser, { loading }] = useMutation(REGISTER_USER, {
-    update(_, res) {
-      console.log(res);
-    },
-    onError(err) {
-      setErrors(err.graphQLErrors[0].extensions.errors);
-    },
+    update: (_, __) => props.history.push('/login'),
+    onError: (err) => setErrors(err.graphQLErrors[0].extensions.errors),
   });
 
   const submitRegisterForm = (e) => {
@@ -92,7 +88,7 @@ function Register() {
           }`}
           onChange={handleInputChange}
         />
-        <span class="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1">
+        <span className="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1">
           {errors.password}
         </span>
         <label htmlFor="password-confirm" className="block mt-2 font-semibold text-gray-600">
@@ -109,7 +105,7 @@ function Register() {
           }`}
           onChange={handleInputChange}
         />
-        <span class="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1">
+        <span className="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1">
           {errors.confirmPassword}
         </span>
         <button
