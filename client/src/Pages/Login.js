@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { gql, useLazyQuery } from '@apollo/client';
 import useLocalStorage from '../hooks/useLocalStore';
+import { Link } from 'react-router-dom';
 
 const LOGIN_USER = gql`
   query login($username: String!, $password: String!) {
@@ -88,9 +89,12 @@ function Login(props) {
         >
           {loading ? 'Loading...' : 'Login'}
         </button>
-        <p className="flex justify-between mt-4 text-xs text-gray-500 cursor-pointer hover:text-black">
+        <Link
+          to="/register"
+          className="flex justify-between mt-4 text-xs text-gray-500 cursor-pointer hover:text-black"
+        >
           You don't have an account? Register now!
-        </p>
+        </Link>
       </form>
     </div>
   );

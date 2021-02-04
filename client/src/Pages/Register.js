@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { gql, useMutation } from '@apollo/client';
+import { Link } from 'react-router-dom';
 
 const REGISTER_USER = gql`
   mutation register($username: String!, $email: String!, $password: String!, $confirmPassword: String!) {
@@ -55,7 +56,7 @@ function Register(props) {
           onChange={handleInputChange}
         />
         {errors.username && (
-          <span class="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1">
+          <span className="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1">
             {errors.username}
           </span>
         )}
@@ -73,7 +74,9 @@ function Register(props) {
           }`}
           onChange={handleInputChange}
         />
-        <span class="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1">{errors.email}</span>
+        <span className="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1">
+          {errors.email}
+        </span>
         <label htmlFor="password" className="block mt-2 font-semibold text-gray-600">
           Password
         </label>
@@ -115,9 +118,9 @@ function Register(props) {
         >
           {loading ? 'Loading...' : 'Sign up'}
         </button>
-        <p className="flex justify-between mt-4 text-xs text-gray-500 cursor-pointer hover:text-black">
+        <Link to="/login" className="flex justify-between mt-4 text-xs text-gray-500 cursor-pointer hover:text-black">
           Already registered?
-        </p>
+        </Link>
       </form>
     </div>
   );
