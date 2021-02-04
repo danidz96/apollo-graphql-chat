@@ -25,7 +25,7 @@ function Login(props) {
 
   const [loginUser, { loading }] = useLazyQuery(LOGIN_USER, {
     onError: (err) => setErrors(err.graphQLErrors[0].extensions.errors),
-    onComplete: (data) => {
+    onCompleted: (data) => {
       setToken('token', data.login.token);
       props.history.push('/');
     },
