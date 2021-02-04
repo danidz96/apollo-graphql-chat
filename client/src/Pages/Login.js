@@ -19,14 +19,14 @@ function Login(props) {
     username: '',
     password: '',
   });
-  const [_, setToken] = useLocalStorage();
+  const [_, setToken] = useLocalStorage('token');
 
   const [errors, setErrors] = useState({});
 
   const [loginUser, { loading }] = useLazyQuery(LOGIN_USER, {
     onError: (err) => setErrors(err.graphQLErrors[0].extensions.errors),
     onCompleted: (data) => {
-      setToken('token', data.login.token);
+      setToken(data.login.token);
       props.history.push('/');
     },
   });
