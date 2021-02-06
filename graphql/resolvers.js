@@ -1,27 +1,17 @@
-const { User } = require('../models');
 const { UserInputError, AuthenticationError } = require('apollo-server');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { Op } = require('sequelize');
+const { User, Message } = require('../models');
 
 const env = process.env.NODE_ENV || 'development';
 const { jwtSecretKey } = require('../config/config')[env];
 
 module.exports = {
   Query: {
-    getUsers: async (_, __, context) => {
+    getUsers: async (_, __, { user }) => {
       try {
-        let user;
-        if (context.req?.headers?.authorization) {
-          const token = context.req.headers.authorization.split('Bearer ')[1];
-
-          jwt.verify(token, jwtSecretKey, (err, decodedToken) => {
-            if (err) {
-              throw new AuthenticationError('Unauthenticated');
-            }
-            user = decodedToken;
-          });
-        }
+        if (!user) throw new AuthenticationError('Unauthenticated');
 
         const users = await User.findAll({
           where: { username: { [Op.ne]: user.username } },
@@ -100,6 +90,27 @@ module.exports = {
         return user;
       } catch (error) {
         throw new UserInputError('Bad input', { errors: error });
+      }
+    },
+    sendMessage: async (_, { to, content }, { user }) => {
+      try {
+        if (!user) throw new AuthenticationError('Unauthenticated');
+
+        const recipient = await User.findOne({ where: { username: to } });
+
+        if (!recipient) {
+          throw new UserInputError('User not found');
+        } else if (!recipient.username === user.username) {
+          throw new UserInputError("You can't message yourself");
+        }
+
+        if (content.trim() === '') throw new UserInputError('Message is empty');
+
+        const message = await Message.create({ from: user.username, to, content });
+        return message;
+      } catch (error) {
+        console.log(error);
+        throw error;
       }
     },
   },
