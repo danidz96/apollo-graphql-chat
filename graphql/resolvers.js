@@ -37,8 +37,8 @@ module.exports = {
       let errors = {};
 
       try {
-        if (username.trim() === '') errors.username = 'username must not be empty';
-        if (password === '') errors.password = 'password must not be empty';
+        if (username.trim() === '') errors.username = 'Username must not be empty';
+        if (password === '') errors.password = 'Password must not be empty';
 
         if (Object.keys(errors).length > 0) {
           throw new UserInputError('Bad input', { errors });
@@ -49,15 +49,15 @@ module.exports = {
         });
 
         if (!user) {
-          errors.username = 'user not found';
+          errors.username = 'User not found';
           throw new UserInputError('User not found', { errors });
         }
 
         const correctPassword = await bcrypt.compare(password, user.password);
 
         if (!correctPassword) {
-          errors.password = 'password is incorrect';
-          throw new AuthenticationError('Password is incorrect', { errors });
+          errors.password = 'Password is incorrect';
+          throw new UserInputError('Password is incorrect', { errors });
         }
 
         const token = jwt.sign(
@@ -79,14 +79,14 @@ module.exports = {
       let { username, email, password, confirmPassword } = args;
       let errors = {};
       try {
-        if (!username.trim()) errors.username = 'username must not be empty';
-        if (!email.trim()) errors.email = 'email must not be empty';
-        if (!password.trim()) errors.password = 'password must not be empty';
-        if (!confirmPassword.trim()) errors.confirmPassword = 'repeat password must not be empty';
-        if (password !== confirmPassword.trim()) errors.confirmPassword = 'passwords must match';
+        if (!username.trim()) errors.username = 'Username must not be empty';
+        if (!email.trim()) errors.email = 'Email must not be empty';
+        if (!password.trim()) errors.password = 'Password must not be empty';
+        if (!confirmPassword.trim()) errors.confirmPassword = 'Confirm password must not be empty';
+        if (password !== confirmPassword.trim()) errors.confirmPassword = 'Passwords must match';
 
         if (Object.keys(errors).length > 0) {
-          return errors;
+          throw errors;
         }
 
         password = await bcrypt.hash(password, 6);
