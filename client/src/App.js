@@ -5,6 +5,7 @@ import Login from '@pages/Login';
 import Home from '@pages/Home';
 import { AuthProvider } from '@context/auth';
 import Navbar from '@components/Navbar';
+import DynamicRoute from '@components/DynamicRoute';
 
 function App() {
   return (
@@ -16,9 +17,9 @@ function App() {
               <Navbar />
               <div className="grid grid-cols-1 items-center min-h-screen bg-blue-50 md:grid-cols-8">
                 <div className="col-auto md:col-span-4 md:col-start-3">
-                  <Route path="/" exact component={Home} />
-                  <Route path="/register" component={Register} />
-                  <Route path="/login" component={Login} />
+                  <DynamicRoute path="/" exact component={Home} authenticated />
+                  <DynamicRoute path="/register" component={Register} guest />
+                  <DynamicRoute path="/login" component={Login} guest />
                 </div>
               </div>
             </div>
