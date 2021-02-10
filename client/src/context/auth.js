@@ -1,7 +1,25 @@
 import React, { createContext, useReducer, useContext } from 'react';
+import jwtDecode from 'jwt-decode';
 
 const AuthStateContext = createContext();
 const AuthDispatchContext = createContext();
+
+const token = localStorage.getItem('token');
+
+let user;
+
+if (token) {
+  const decodedToken = jwtDecode(token);
+  const expiresAt = new Date(decodedToken.exp * 1000);
+
+  if (new Date() > expiresAt) {
+    localStorage.removeItem('token');
+  } else {
+    user = decodedToken;
+  }
+} else {
+  console.log('No token found');
+}
 
 const authReducer = (state, action) => {
   switch (action.type) {
@@ -20,7 +38,8 @@ const authReducer = (state, action) => {
       throw new Error(`Unknown action type: ${action.type}`);
   }
 };
-const initialState = { user: null };
+
+const initialState = { user };
 
 export const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
