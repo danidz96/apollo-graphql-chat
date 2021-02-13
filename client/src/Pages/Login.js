@@ -26,7 +26,7 @@ function Login(props) {
   const [errors, setErrors] = useState({});
 
   const [loginUser, { loading }] = useLazyQuery(LOGIN_USER, {
-    onError: (err) => setErrors(err.graphQLErrors[0].extensions.errors),
+    onError: (err) => setErrors(err.graphQLErrors[0]?.extensions.errors),
     onCompleted: (data) => {
       setToken(data.login.token);
       dispatch({ type: 'LOGIN', payload: data.login });

@@ -8,15 +8,30 @@ const DATE_UNITS = [
   ['second', 1],
 ];
 
+const WEEKDAY = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
 const getDateDiffs = (timestamp) => {
   const now = Date.now();
-  const elapsed = (timestamp - now) / 1000;
+  const milliseconds = new Date(timestamp).getTime();
+  const elapsed = (milliseconds - now) / 1000;
 
   for (const [unit, secondsInUnit] of DATE_UNITS) {
     if (Math.abs(elapsed) > secondsInUnit || unit === 'second') {
       const value = Math.round(elapsed / secondsInUnit);
       return { value, unit };
     }
+  }
+};
+
+const getTime = (timestamp, unit) => {
+  const date = new Date(timestamp);
+
+  if (unit === 'second' || unit === 'minute' || unit === 'hour') {
+    return `${date.getHours()}:${date.getMinutes()}`;
+  } else if (unit === 'day') {
+    return WEEKDAY[date.getDay()];
+  } else {
+    return `${date.getDay()}/${date.getMonth()}/${date.getFullYear()}`;
   }
 };
 
@@ -31,10 +46,8 @@ export default function useTimeAgo(timestamp) {
 
     return () => clearInterval(interval);
   }, [timestamp]);
+  console.log(timeago);
 
-  const rtf = new Intl.RelativeTimeFormat('en', { numeric: 'auto' });
-
-  const { value, unit } = timeago;
-
-  return rtf.format(value, unit);
+  const { unit } = timeago;
+  return getTime(timestamp, unit);
 }
