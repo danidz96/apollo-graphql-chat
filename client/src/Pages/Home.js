@@ -39,7 +39,7 @@ function Home() {
 
   return (
     <div className="w-full h-96 bg-white grid grid-cols-6 rounded-sm shadow-md" style={{ height: '85vh' }}>
-      <div className="col-span-2 py-6 bg-gray-50 space-y-3">{usersMarkup}</div>
+      <div className="col-span-2 py-6 bg-gray-50 space-y-3 overflow-y-auto">{usersMarkup}</div>
       <div className="col-span-4">Messages</div>
     </div>
   );
