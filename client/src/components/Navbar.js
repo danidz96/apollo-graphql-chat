@@ -10,7 +10,7 @@ function Navbar() {
   };
 
   return (
-    <div className="h-10 w-9/12 flex justify-end items-center">
+    <div className="h-12 w-9/12 flex justify-end items-center">
       {user ? (
         <Link to="/login">
           <button onClick={logout}>Logout</button>

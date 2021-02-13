@@ -13,10 +13,13 @@ function App() {
       <AuthProvider>
         <BrowserRouter>
           <Switch>
-            <div>
+            <div className="min-h-screen">
               <Navbar />
-              <div className="grid grid-cols-1 items-center min-h-screen bg-blue-50 md:grid-cols-8">
-                <div className="col-auto md:col-span-4 md:col-start-3">
+              <div
+                className="grid grid-cols-1 items-center bg-blue-500 md:grid-cols-8"
+                style={{ height: 'calc(100vh - 3rem)' }}
+              >
+                <div className="col-auto md:col-span-6 md:col-start-2">
                   <DynamicRoute path="/" exact component={Home} authenticated />
                   <DynamicRoute path="/register" component={Register} guest />
                   <DynamicRoute path="/login" component={Login} guest />
