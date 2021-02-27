@@ -46,7 +46,6 @@ export default function useTimeAgo(timestamp) {
 
     return () => clearInterval(interval);
   }, [timestamp]);
-  console.log(timeago);
 
   const { unit } = timeago;
   return getTime(timestamp, unit);
