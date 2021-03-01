@@ -1,5 +1,4 @@
-import { useState, useEffect } from 'react';
-import { gql, useQuery, useLazyQuery } from '@apollo/client';
+import { gql, useQuery } from '@apollo/client';
 import UserChatRow from '@components/UserChatRow';
 
 const GET_USERS = gql`
