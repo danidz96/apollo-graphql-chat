@@ -2,7 +2,7 @@ import Register from '@pages/Register';
 import ApolloProvider from './ApolloProvider';
 import { BrowserRouter, Switch } from 'react-router-dom';
 import Login from '@pages/Login';
-import Home from '@pages/Home';
+import Home from '@pages/home/Home';
 import { AuthProvider } from '@context/auth';
 import Navbar from '@components/Navbar';
 import DynamicRoute from '@components/DynamicRoute';
