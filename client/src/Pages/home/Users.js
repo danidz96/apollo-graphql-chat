@@ -1,5 +1,6 @@
 import { gql, useQuery } from '@apollo/client';
 import UserChatRow from '@components/UserChatRow';
+import { useMessageDispatch, useMessageState } from '@context/message';
 
 const GET_USERS = gql`
   query getUsers {
@@ -19,23 +20,21 @@ const GET_USERS = gql`
 `;
 
 function Users({ setSelectedUser }) {
-  const { loading, data, error } = useQuery(GET_USERS);
+  const dispatch = useMessageDispatch();
+  const { users } = useMessageState();
 
-  if (error) {
-    console.error(error);
-  }
-
-  if (data) {
-    console.log(data);
-  }
+  const { loading } = useQuery(GET_USERS, {
+    onCompleted: (data) => dispatch({ type: 'SET_USERS', payload: data.getUsers }),
+    onError: (err) => console.log(err),
+  });
 
   let usersMarkup;
-  if (!data || loading) {
+  if (!users || loading) {
     usersMarkup = <p>Loading...</p>;
-  } else if (data.getUsers.length === 0) {
+  } else if (users.length === 0) {
     usersMarkup = <p>No users have joined yet</p>;
-  } else if (data.getUsers.length > 0) {
-    usersMarkup = data.getUsers.map((user) => (
+  } else if (users.length > 0) {
+    usersMarkup = users.map((user) => (
       <UserChatRow key={user.username} user={user} onClick={() => setSelectedUser(user.username)}></UserChatRow>
     ));
   }
