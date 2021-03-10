@@ -19,7 +19,7 @@ const GET_USERS = gql`
   }
 `;
 
-function Users({ setSelectedUser }) {
+function Users({ setSelectedUser, selectedUser }) {
   const dispatch = useMessageDispatch();
   const { users } = useMessageState();
 
@@ -34,9 +34,17 @@ function Users({ setSelectedUser }) {
   } else if (users.length === 0) {
     usersMarkup = <p>No users have joined yet</p>;
   } else if (users.length > 0) {
-    usersMarkup = users.map((user) => (
-      <UserChatRow key={user.username} user={user} onClick={() => setSelectedUser(user.username)}></UserChatRow>
-    ));
+    usersMarkup = users.map((user) => {
+      const selected = selectedUser === user.username;
+      return (
+        <UserChatRow
+          key={user.username}
+          user={user}
+          selectedUser={selected}
+          onClick={() => setSelectedUser(user.username)}
+        ></UserChatRow>
+      );
+    });
   }
 
   return <div className="col-span-2 py-6 bg-gray-50 space-y-3 overflow-y-auto">{usersMarkup}</div>;
