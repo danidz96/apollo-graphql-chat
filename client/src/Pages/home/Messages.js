@@ -16,11 +16,12 @@ const GET_MESSAGES = gql`
 
 function Messages() {
   const [getMessages, { loading: messagesLoading, data: messagesData }] = useLazyQuery(GET_MESSAGES);
-  const { selectedUser } = useMessageState();
+  const { users } = useMessageState();
+  const selectedUser = users?.find((user) => user.selected === true);
 
   useEffect(() => {
     if (selectedUser) {
-      getMessages({ variables: { from: selectedUser } });
+      getMessages({ variables: { from: selectedUser.username } });
     }
   }, [getMessages, selectedUser]);
 
