@@ -19,9 +19,9 @@ const GET_USERS = gql`
   }
 `;
 
-function Users({ setSelectedUser, selectedUser }) {
+function Users() {
   const dispatch = useMessageDispatch();
-  const { users } = useMessageState();
+  const { users, selectedUser } = useMessageState();
 
   const { loading } = useQuery(GET_USERS, {
     onCompleted: (data) => dispatch({ type: 'SET_USERS', payload: data.getUsers }),
@@ -41,7 +41,7 @@ function Users({ setSelectedUser, selectedUser }) {
           key={user.username}
           user={user}
           selectedUser={selected}
-          onClick={() => setSelectedUser(user.username)}
+          onClick={() => dispatch({ type: 'SET_SELECTED_USER', payload: user.username })}
         ></UserChatRow>
       );
     });

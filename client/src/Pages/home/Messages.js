@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { gql, useLazyQuery } from '@apollo/client';
+import { useMessageState } from '@context/message';
 
 const GET_MESSAGES = gql`
   query getMessages($from: String!) {
@@ -13,8 +14,9 @@ const GET_MESSAGES = gql`
   }
 `;
 
-function Messages({ selectedUser }) {
+function Messages() {
   const [getMessages, { loading: messagesLoading, data: messagesData }] = useLazyQuery(GET_MESSAGES);
+  const { selectedUser } = useMessageState();
 
   useEffect(() => {
     if (selectedUser) {
