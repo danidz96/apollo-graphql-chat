@@ -19,7 +19,7 @@ function App() {
                 <div className="min-h-screen">
                   <Navbar />
                   <div
-                    className="grid grid-cols-1 items-center bg-blue-500 md:grid-cols-8"
+                    className="grid grid-cols-1 items-center bg-blue-500 md:grid-cols-8 overflow-y-auto"
                     style={{ height: 'calc(100vh - 3rem)' }}
                   >
                     <div className="col-auto md:col-span-6 md:col-start-2">
