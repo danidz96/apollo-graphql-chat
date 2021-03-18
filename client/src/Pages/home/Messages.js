@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { gql, useLazyQuery } from '@apollo/client';
 import { useMessageState, useMessageDispatch } from '@context/message';
+import Message from '@components/Message';
 
 const GET_MESSAGES = gql`
   query getMessages($from: String!) {
@@ -43,12 +44,12 @@ function Messages() {
   } else if (messagesLoading) {
     selectedChatMarkup = <p>Loading...</p>;
   } else if (messages.length > 0) {
-    selectedChatMarkup = messages.map((message) => <p key={message.uuid}>{message.content}</p>);
+    selectedChatMarkup = messages.map((message) => <Message message={message} />);
   } else if (messages.length === 0) {
     selectedChatMarkup = <p>You are now connected.</p>;
   }
 
-  return <div className="col-span-4">{selectedChatMarkup}</div>;
+  return <div className="col-span-4 flex flex-col-reverse space-y-3 m-3">{selectedChatMarkup}</div>;
 }
 
 export default Messages;

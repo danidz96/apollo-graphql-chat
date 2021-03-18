@@ -7,6 +7,7 @@ function Navbar() {
 
   const logout = () => {
     dispatch({ type: 'LOGOUT' });
+    window.location.href = '/login'
   };
 
   return (
