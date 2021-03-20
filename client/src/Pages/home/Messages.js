@@ -44,12 +44,12 @@ function Messages() {
   } else if (messagesLoading) {
     selectedChatMarkup = <p>Loading...</p>;
   } else if (messages.length > 0) {
-    selectedChatMarkup = messages.map((message) => <Message message={message} />);
+    selectedChatMarkup = messages.map((message) => <Message key={message.id} message={message} />);
   } else if (messages.length === 0) {
     selectedChatMarkup = <p>You are now connected.</p>;
   }
 
-  return <div className="col-span-4 flex flex-col-reverse space-y-3 m-3">{selectedChatMarkup}</div>;
+  return <div className="col-span-5 md:col-span-4 flex flex-col-reverse space-y-8 m-3">{selectedChatMarkup}</div>;
 }
 
 export default Messages;
