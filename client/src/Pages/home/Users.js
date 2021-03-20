@@ -21,7 +21,8 @@ const GET_USERS = gql`
 
 function Users() {
   const dispatch = useMessageDispatch();
-  const { users, selectedUser } = useMessageState();
+  const { users } = useMessageState();
+  const selectedUser = users?.find((user) => user.selected === true)?.username;
 
   const { loading } = useQuery(GET_USERS, {
     onCompleted: (data) => dispatch({ type: 'SET_USERS', payload: data.getUsers }),
@@ -47,7 +48,7 @@ function Users() {
     });
   }
 
-  return <div className="col-span-2 py-6 bg-gray-50 space-y-3 overflow-y-auto">{usersMarkup}</div>;
+  return <div className="col-span-1 md:col-span-2 py-6 bg-gray-50 space-y-3 overflow-y-auto">{usersMarkup}</div>;
 }
 
 export default Users;
