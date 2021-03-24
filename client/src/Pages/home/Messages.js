@@ -78,7 +78,7 @@ function Messages() {
   }
 
   return (
-    <div className="col-span-5 md:col-span-4 flex flex-col-reverse m-3">
+    <div className="col-span-5 md:col-span-4 flex flex-col-reverse p-3 overflow-y-auto">
       {selectedChatMarkup}
       <form onSubmit={onSubmitMessage} className="order-first">
         <input
