@@ -60,7 +60,7 @@ function Messages() {
 
   const onSubmitMessage = (event) => {
     event.preventDefault();
-    if (!message) return;
+    if (!message || !selectedUser) return;
 
     sendMessage({ variables: { to: selectedUser.username, content: message } });
     setMessage('');
@@ -68,7 +68,7 @@ function Messages() {
 
   let selectedChatMarkup;
   if (!messages && !messagesLoading) {
-    selectedChatMarkup = <p>Select a contact.</p>;
+    selectedChatMarkup = <p className="self-center text-gray-500">Select a contact.</p>;
   } else if (messagesLoading) {
     selectedChatMarkup = <p>Loading...</p>;
   } else if (messages.length > 0) {
@@ -80,10 +80,11 @@ function Messages() {
   return (
     <div className="col-span-5 md:col-span-4 flex flex-col-reverse p-3 overflow-y-auto">
       {selectedChatMarkup}
-      <form onSubmit={onSubmitMessage} className="order-first">
+      <form onSubmit={onSubmitMessage} className="order-first mt-2 ">
         <input
           type="text"
           placeholder="Type a message..."
+          className="w-full py-2 px-4 rounded-3xl bg-gray-100 focus:outline-none focus:ring focus:border-blue-300"
           value={message}
           onChange={(evt) => setMessage(evt.target.value)}
         />
