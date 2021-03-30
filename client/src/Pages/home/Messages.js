@@ -60,7 +60,7 @@ function Messages() {
 
   const onSubmitMessage = (event) => {
     event.preventDefault();
-    if (!message || !selectedUser) return;
+    if (!message.trim() || !selectedUser) return;
 
     sendMessage({ variables: { to: selectedUser.username, content: message } });
     setMessage('');
