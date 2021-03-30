@@ -80,7 +80,7 @@ function Messages() {
   return (
     <div className="col-span-5 md:col-span-4 flex flex-col-reverse p-3 pr-0 overflow-y-auto">
       <div className="overflow-y-auto flex flex-col-reverse pr-3">{selectedChatMarkup}</div>
-      <form onSubmit={onSubmitMessage} className="order-first mt-2 pr-3">
+      <form onSubmit={onSubmitMessage} className="order-first mt-2 pr-3 flex items-center">
         <input
           type="text"
           placeholder="Type a message..."
@@ -88,6 +88,7 @@ function Messages() {
           value={message}
           onChange={(evt) => setMessage(evt.target.value)}
         />
+        <i role="button" className="fas fa-paper-plane fa-lg ml-3 mr-1 text-blue-500" onClick={onSubmitMessage}></i>
       </form>
     </div>
   );
