@@ -24,6 +24,9 @@ const getDateDiffs = (timestamp) => {
 };
 
 const getTime = (timestamp, unit) => {
+  if (!timestamp) {
+    return null;
+  }
   const date = new Date(timestamp);
 
   if (unit === 'second' || unit === 'minute' || unit === 'hour') {
