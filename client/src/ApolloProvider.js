@@ -26,7 +26,7 @@ const wsLink = new WebSocketLink({
   options: {
     reconnect: true,
     connectionParams: {
-      Authorization: `Bearer ${localStorage.getItem('token').replace(/['"]+/g, '')}`,
+      Authorization: `Bearer ${localStorage.getItem('token')?.replace(/['"]+/g, '')}`,
     },
   },
 });

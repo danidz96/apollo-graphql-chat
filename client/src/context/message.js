@@ -30,7 +30,7 @@ const messageReducer = (state, action) => {
       const userIndex = users.findIndex((user) => user.username === username);
       const updatedUser = {
         ...users[userIndex],
-        messages: [message, ...users[userIndex].messages],
+        messages: users[userIndex].messages ? [message, ...users[userIndex].messages] : null,
         latestMessage: message,
       };
       users[userIndex] = updatedUser;
