@@ -28,7 +28,11 @@ const messageReducer = (state, action) => {
     case 'ADD_MESSAGE': {
       const users = [...state.users];
       const userIndex = users.findIndex((user) => user.username === username);
-      const updatedUser = { ...users[userIndex], messages: [message, ...users[userIndex].messages] };
+      const updatedUser = {
+        ...users[userIndex],
+        messages: [message, ...users[userIndex].messages],
+        latestMessage: message,
+      };
       users[userIndex] = updatedUser;
       return {
         ...state,
