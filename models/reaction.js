@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate({ User, Message }) {
       // define association here
       this.belongsTo(Message);
-      this.belongsTo(Message);
+      this.belongsTo(User);
     }
   }
   Reaction.init(
@@ -35,7 +35,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: 'Reaction',
-      tableName: 'reactions',
+      tableName: 'Reactions',
     },
   );
   return Reaction;
